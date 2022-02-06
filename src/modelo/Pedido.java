@@ -8,9 +8,9 @@ public class Pedido {
     private int idPedido;
     private String nombreCliente;
     private String direccionCliente;
-    private ArrayList<Producto> itemsPedido;
+    private ArrayList<ProductoMenu> itemsPedido;
 
-    public Pedido(int idPedido, int numeroPedidos, String nombreCliente, String direccionCliente, ArrayList<Producto> itemsPedido) {
+    public Pedido(int idPedido, int numeroPedidos, String nombreCliente, String direccionCliente, ArrayList<ProductoMenu> itemsPedido) {
         this.numeroPedidos = numeroPedidos;
         this.idPedido = idPedido;
         this.nombreCliente = nombreCliente;
@@ -22,7 +22,7 @@ public class Pedido {
         return this.idPedido;
     }
 
-    public void agregarProducto(Producto nuevoItem) {
+    public void agregarProducto(ProductoMenu nuevoItem) {
         itemsPedido.add(nuevoItem);
     }
     private int getPrecioPedido(){

@@ -2,7 +2,7 @@ package procesamiento;
 
 import modelo.Combo;
 import modelo.Ingrediente;
-import modelo.Producto;
+import modelo.ProductoMenu;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,7 +13,7 @@ import java.util.Map;
 public class Procesamiento {
 
 
-    HashMap<String, Producto> menuBase=new HashMap<>();
+    HashMap<String, ProductoMenu> menuBase=new HashMap<>();
     HashMap<String, Combo> menuCombos = new HashMap<>();
     HashMap<String, Ingrediente> menuIng = new HashMap<>();
 
@@ -22,14 +22,14 @@ public class Procesamiento {
         BufferedReader br = new BufferedReader(new FileReader(menu));
         String line = br.readLine();
         String[] info;
-        Producto producto;
+        ProductoMenu productoMenu;
 
         while (line != null) {
             info = line.split(";");
             String nombre = info[0];
             int precio = Integer.parseInt(info[1]);
-            producto = new Producto(nombre, precio);
-            menuBase.put(nombre, producto);
+            productoMenu = new ProductoMenu(nombre, precio);
+            menuBase.put(nombre, productoMenu);
             line = br.readLine();
         }
         br.close();
@@ -83,7 +83,7 @@ public class Procesamiento {
 
     }
 
-    // String[] producto = []
+    // String[] productoMenu = []
     // Arraylist <String> = new ArrayList<> ();
 
 }

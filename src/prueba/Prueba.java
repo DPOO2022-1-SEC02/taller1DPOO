@@ -7,7 +7,7 @@
 
 package prueba;
 
-import modelo.Producto;
+import modelo.ProductoMenu;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -19,21 +19,21 @@ public class Prueba {
     	
     	
         Prueba prueba = new Prueba();
-        HashMap<String, Producto> menu = prueba.cargarMenu();
+        HashMap<String, ProductoMenu> menu = prueba.cargarMenu();
 
     }
 
-    public HashMap<String, Producto> cargarMenu() throws Exception {
-        HashMap<String, Producto> listaProductos = new HashMap<>();
+    public HashMap<String, ProductoMenu> cargarMenu() throws Exception {
+        HashMap<String, ProductoMenu> listaProductos = new HashMap<>();
         File menu = new File("./data/menu.txt");
         BufferedReader br = new BufferedReader(new FileReader(menu));
 
         String line = br.readLine();
         while (line != null) {
             String[] info = line.split(";");
-            Producto producto = new Producto(info[0],Integer.parseInt(info[1]));
+            ProductoMenu productoMenu = new ProductoMenu(info[0],Integer.parseInt(info[1]));
 
-            listaProductos.put(info[0],producto);
+            listaProductos.put(info[0],productoMenu);
             line = br.readLine();
 
         }
