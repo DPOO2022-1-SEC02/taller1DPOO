@@ -1,49 +1,47 @@
 /*
-* ESTA ES LA CLASE PRUEBAS
-* Aquí se hacen las pruebas de commits de git
-* También se pueden probar los métodos antes de agregarlos a las clases principales
-* Está aquí para evitar que fallen cosas en las principales y para identificar más facilmente los problemas
-* */
+ * ESTA ES LA CLASE PRUEBAS
+ * Aquí se hacen las pruebas de commits de git
+ * También se pueden probar los métodos antes de agregarlos a las clases principales
+ * Está aquí para evitar que fallen cosas en las principales y para identificar más facilmente los problemas
+ * */
 
 package prueba;
 
+import producto.Producto;
+
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Prueba {
     public static void main(String[] args) throws Exception {
 
         Prueba prueba = new Prueba();
-        prueba.mostrarMenu();
+        ArrayList<Producto> menu = prueba.cargarMenu();
+        for(int i=0;i<menu.size();i++){
+            System.out.println(menu.get(i).getNombre());
+        }
     }
 
-    public void mostrarMenu() throws Exception {
-        int actualPos = 1;
-        int repeticiones;
+    public ArrayList<Producto> cargarMenu() throws Exception {
+        ArrayList<Producto> listaProductos = new ArrayList<>();
         File menu = new File("./data/menu.txt");
         BufferedReader br = new BufferedReader(new FileReader(menu));
 
-
-        String line=br.readLine();
-        System.out.println("|"+" ".repeat(14)+"Producto"+" ".repeat(13)+"|  Precio |");
-        System.out.println("-".repeat(48));
-
-        while(line!=null){
-
+        String line = br.readLine();
+        while (line != null) {
             String[] info = line.split(";");
-            //Se determina la cantidad de repeticiones para que se pueda ver el menú con un estilo de tabla.
-            //Se resta 1 si es mayor a diez, porque se corre un caracter cuando se muestran los números a la izquierda
-            repeticiones=35-info[0].length();
-            if (actualPos>=10) repeticiones-=1;
+            Producto producto = new Producto(info[0],Integer.parseInt(info[1]));
 
-            System.out.print("| "+actualPos+". "+info[0]+" ".repeat(repeticiones-5)+" |  ");
-            System.out.println(info[1]+" ".repeat(7-info[1].length())+"|");
+            listaProductos.add(producto);
+            line = br.readLine();
 
-
-            line=br.readLine();
-            actualPos++;
         }
+        return listaProductos;
     }
+
+
+
 
 
 }
