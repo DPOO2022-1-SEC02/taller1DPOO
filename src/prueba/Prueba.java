@@ -7,7 +7,7 @@
 
 package prueba;
 
-import producto.Producto;
+import modelo.Producto;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -17,7 +17,6 @@ import java.util.Scanner;
 public class Prueba {
     public static void main(String[] args) throws Exception {
     	
-    	System.out.println("Hola mundo");
     	
         Prueba prueba = new Prueba();
         HashMap<String, Producto> menu = prueba.cargarMenu();
@@ -41,11 +40,4 @@ public class Prueba {
         return listaProductos;
     }
 
-
-
-
-
-
-
 }
-//Prueba commit-ernesto
