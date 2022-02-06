@@ -17,6 +17,7 @@ public class Prueba {
     public static void main(String[] args) throws Exception {
     	
     	System.out.println("Hola mundo");
+    	
         Prueba prueba = new Prueba();
         ArrayList<Producto> menu = prueba.cargarMenu();
         for(int i=0;i<menu.size();i++){
