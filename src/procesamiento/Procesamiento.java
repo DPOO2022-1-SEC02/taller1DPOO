@@ -7,6 +7,7 @@ import modelo.ProductoMenu;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -81,6 +82,15 @@ public class Procesamiento {
         }
         br.close();
 
+    }
+
+    public ProductoMenu buscarProducto(ArrayList<ProductoMenu> menuBase,String nombre){
+        for(ProductoMenu producto : menuBase){
+            if (producto.getNombre().equals(nombre)){
+                return producto;
+            }
+        }
+        return null;
     }
 
     // String[] productoMenu = []

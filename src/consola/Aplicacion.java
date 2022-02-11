@@ -1,42 +1,71 @@
 package consola;
 
-import modelo.Ingrediente;
-import modelo.Pedido;
-import modelo.ProductoMenu;
-import modelo.Restaurante;
+import modelo.*;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Aplicacion {
-    private Restaurante restaurante;
-    Aplicacion aplicacion = new Aplicacion();
-    Scanner entrada = new Scanner(System.in);
-
-    public static void main(String[] args) {
+    private Restaurante restaurante = new Restaurante();
 
 
-        int opcion;
 
+    private final File archivoMenu = new File("./data/menu.txt");
+    private final File archivoCombos = new File("./data/combos.txt");
+    private final File archivoIngredientes = new File("./data/ingredientes.txt");
+
+
+
+    public static void main(String[] args) throws Exception {
+        Aplicacion aplicacion = new Aplicacion();
+
+        aplicacion.ejecutarOpcion();
 
     }
 
-    public void ejecutarOpcion(int opcion) {
+    public void ejecutarOpcion() throws Exception {
+        int opcion ;
         boolean continuar = true;
         int id;
+        restaurante.cargarInformacionRestaurante(archivoIngredientes,archivoMenu,archivoCombos);
+
+        System.out.print("""
+                              Bienvenido a El Corral
+                              Estas son las opciones que tenemos para ti:
+                              """);
         while (continuar) {
-            aplicacion.mostrarMenu();
-            opcion = entrada.nextInt();
+            mostrarMenu();
+            opcion = Integer.parseInt(input("Por favor selecciona una opción"));
             switch (opcion) {
+
+
                 case (1) -> {
                     ArrayList<ProductoMenu> menuCompleto = restaurante.getMenuBase();
+                    ArrayList<Combo> combos = restaurante.getCombos();
+
                     for (ProductoMenu producto : menuCompleto) {
                         System.out.println(producto.getNombre() + " " + producto.getPrecio());
                     }
+
+                    System.out.println("Combos:");
+                    for (Combo combo : combos) {
+                        System.out.println(combo.getNombre() + " " + combo.getPrecio());
+                    }
                 }
-                case (2) -> restaurante.iniciarPedido();
-                case (3) -> {
+
+
+                case (2) -> {
+                    String nombreCliente = input("Escriba el nombre del cliente");
+                    String direccionCliente = input("Escriba la dirección del cliente");
+                    restaurante.iniciarPedido(nombreCliente, direccionCliente);
+                }
+
+
+/*                case (3) -> {
                     id = pedirId();
                     ArrayList<Ingrediente> ingredientes = restaurante.getIngredientes();
                     for (Ingrediente ingrediente : ingredientes) {
@@ -48,19 +77,19 @@ public class Aplicacion {
 
                 }
                 case (4) -> restaurante.cerrarYGuardarPedido();
-                case (5) -> {
-                    id = pedirId();
-                    restaurante.getPedidoPorId(id);
-                }
-                case (6) -> continuar=false;
+*                case (5) -> {
+*                    id = pedirId();
+*                    restaurante.getPedidoPorId(id);
+*                }
+*/
+                case (6) -> continuar = false;
             }
 
         }
     }
 
     public int pedirId() {
-        System.out.print("Escribe el id del pedido: ");
-        return entrada.nextInt();
+        return Integer.parseInt(input("Escribe el id del pedido."));
     }
 
     public void mostrarMenu() {
@@ -71,7 +100,23 @@ public class Aplicacion {
                 4. Cerrar un pedido y guardar la factura
                 5. Consultar la información de un pedido dado su id
                 6. Salir de la aplicación
-                7. Por favor selecciona una opción:\s""");
+                """);
     }
 
+
+    public String input(String mensaje) {
+        try {
+            System.out.print(mensaje + ": ");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+            return reader.readLine();
+        } catch (IOException e) {
+            System.out.println("Error leyendo de la consola");
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
 }
+
+
