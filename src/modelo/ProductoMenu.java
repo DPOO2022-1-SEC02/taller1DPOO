@@ -1,24 +1,24 @@
 package modelo;
 
-public class ProductoMenu {
-	ProductoMenu producto;
+public class ProductoMenu implements Producto {
+	
 	private String nombre;
-	private int precio;
+	private int precioBase;
 
-	public ProductoMenu(String nombre, int precio) {
+	public ProductoMenu (String nombre, int precioBase) {
 		this.nombre = nombre;
-		this.precio = precio;
+		this.precioBase = precioBase;
 	}
-
 
 	public String getNombre() {
 		return nombre;
-
 	}
-	public int getPrecio(){
-		return precio;
+	
+	public int getPrecio() {
+		return precioBase;
 	}
-	public String generarTextoFactura(){
-		return "";
+	
+	public String genererarTextoFactura() {
+		return nombre + " ...... $" + precioBase;
 	}
 }
