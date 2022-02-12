@@ -8,14 +8,15 @@ public class Pedido {
     private int idPedido;
     private String nombreCliente;
     private String direccionCliente;
-    private ArrayList<ProductoMenu> itemsPedido;
+    private ArrayList<ProductoMenu> itemsPedido ;
 
-    public Pedido(int idPedido, int numeroPedidos, String nombreCliente, String direccionCliente, ArrayList<ProductoMenu> itemsPedido) {
+    public Pedido(int idPedido, int numeroPedidos, String nombreCliente, String direccionCliente) {
         this.numeroPedidos = numeroPedidos;
         this.idPedido = idPedido;
         this.nombreCliente = nombreCliente;
         this.direccionCliente = direccionCliente;
-        this.itemsPedido =itemsPedido;
+        this.itemsPedido = new ArrayList<>();
+
     }
 
     public int getIdPedido() {

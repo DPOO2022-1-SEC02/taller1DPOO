@@ -43,25 +43,17 @@ public class Aplicacion {
             switch (opcion) {
 
 
-                case (1) -> {
-                    ArrayList<ProductoMenu> menuCompleto = restaurante.getMenuBase();
-                    ArrayList<Combo> combos = restaurante.getCombos();
-
-                    for (ProductoMenu producto : menuCompleto) {
-                        System.out.println(producto.getNombre() + " " + producto.getPrecio());
-                    }
-
-                    System.out.println("Combos:");
-                    for (Combo combo : combos) {
-                        System.out.println(combo.getNombre() + " " + combo.getPrecio());
-                    }
-                }
-
+                case (1) -> mostrarMenuBase();
 
                 case (2) -> {
                     String nombreCliente = input("Escriba el nombre del cliente");
                     String direccionCliente = input("Escriba la dirección del cliente");
                     restaurante.iniciarPedido(nombreCliente, direccionCliente);
+
+                    //mostrarMenuBase();
+
+
+
                 }
 
 
@@ -103,6 +95,26 @@ public class Aplicacion {
                 """);
     }
 
+
+    public void mostrarMenuBase(){
+        ArrayList<ProductoMenu> menuCompleto = restaurante.getMenuBase();
+        ArrayList<Combo> combos = restaurante.getCombos();
+        int cont = 1;
+        System.out.println("\nMenú El Corral: \n");
+        for (ProductoMenu producto : menuCompleto) {
+            System.out.println(cont+"."+producto.getNombre() + " " + producto.getPrecio());
+            cont++;
+        }
+        System.out.println("\n");
+
+        System.out.println("Combos:");
+        for (Combo combo : combos) {
+            System.out.println(cont+". "+combo.getNombre() + " " + combo.getPrecio());
+            cont++;
+        }
+        System.out.println("\n");
+
+    }
 
     public String input(String mensaje) {
         try {

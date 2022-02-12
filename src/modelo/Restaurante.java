@@ -2,16 +2,15 @@ package modelo;
 
 import procesamiento.Procesamiento;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Restaurante {
     private ArrayList<Ingrediente> ingredientes;
     private ArrayList<ProductoMenu> menuBase;
     private ArrayList<Combo> combos;
-    private ArrayList<Pedido> pedidos;
+    private HashMap<Integer,Pedido> pedidos;
     private Pedido pedidoEnCurso;
 
     private Procesamiento procesador = new Procesamiento();
@@ -21,7 +20,7 @@ public class Restaurante {
         this.ingredientes = new ArrayList<>();
         this.menuBase = new ArrayList<>();
         this.combos = new ArrayList<>();
-        this.pedidos = new ArrayList<>();
+        this.pedidos = new HashMap<>();
     }
 
 
@@ -98,8 +97,33 @@ public class Restaurante {
 
     }
 
-    public void iniciarPedido(String nombreCliente, String direccionCliente) {
 
+    int id_actual = 0;
+
+    public void iniciarPedido(String nombreCliente, String direccionCliente) {
+        boolean continuar = true;
+        int cont=1;
+        Pedido pedido = new Pedido(id_actual,0,nombreCliente,direccionCliente);
+        id_actual++;
+
+        while (continuar){
+            System.out.println("Selecciona una de las opciones que tenemos para tí.");
+            System.out.println("Presiona 0 si quieres salir.");
+            for(ProductoMenu producto: getMenuBase()){
+                System.out.println(cont+". "+producto.getNombre()+" : "+producto.getPrecio());
+                cont++;
+            }
+            int seleccionado = Integer.parseInt(input("Selecciona una opcion"));
+            if (seleccionado==0) {
+                continuar=false;
+            }
+            else {
+                pedido.agregarProducto(menuBase.get(seleccionado - 1));
+                cont = 1;
+                pedidos.put(id_actual,pedido);
+            }
+
+        }
     }
 
     public ArrayList<ProductoMenu> getMenuBase() {
@@ -124,5 +148,17 @@ public class Restaurante {
     }*/
 
     public void cerrarYGuardarPedido() {
+    }
+
+    public String input(String mensaje) {
+        try {
+            System.out.print(mensaje + ": ");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+            return reader.readLine();
+        } catch (IOException e) {
+            System.out.println("Error leyendo de la consola");
+            e.printStackTrace();
+        }
+        return null;
     }
 }
