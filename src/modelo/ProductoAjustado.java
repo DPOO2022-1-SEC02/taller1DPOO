@@ -3,28 +3,35 @@ package modelo;
 import java.util.ArrayList;
 
 public class ProductoAjustado implements Producto {
+	
+	private ProductoMenu base;
 	private ArrayList<Ingrediente> agregados;
 	private ArrayList<Ingrediente> eliminados;
-	//private int base;
-
-	ProductoMenu base;
-
-	public ProductoAjustado(ProductoMenu base){
+	
+	public ProductoAjustado(ProductoMenu base) {
 		this.base = base;
+		agregados = new ArrayList<Ingrediente>();
+		eliminados = new ArrayList<Ingrediente>();
 	}
+	
+	public int getPrecio() {
+		int rta = base.getPrecio();
+		for (int i=0; i < agregados.size(); i++) {
+			rta += agregados.get(i).getCostoAdicional();
+		}
+		return rta;
+	}
+	
 	public String getNombre() {
-
 		return base.getNombre();
 	}
-
-
-	public int getPrecio() {
-		int precio_inicial = base.getPrecio();
-		return base.getPrecio();
+	
+	public String genererarTextoFactura() {
+		return base.genererarTextoFactura();
 	}
-
-
-	public String generarTextoFactura() {
-		return base.generarTextoFactura();
+	
+	public void agregarAAgregados(Ingrediente ingrediente) {
+		agregados.add(ingrediente);
 	}
+	
 }
