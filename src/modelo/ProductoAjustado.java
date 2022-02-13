@@ -26,13 +26,10 @@ public class ProductoAjustado implements Producto {
 		return base.getNombre();
 	}
 
-	@Override
-	public String generarTextoFactura() {
-		return null;
-	}
 
-	public String genererarTextoFactura() {
-		return base.genererarTextoFactura();
+
+	public String generarTextoFactura() {
+		return base.generarTextoFactura();
 	}
 	
 	public void agregarAAgregados(Ingrediente ingrediente) {

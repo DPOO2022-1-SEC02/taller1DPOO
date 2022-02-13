@@ -1,7 +1,7 @@
 package modelo;
 
 public class ProductoMenu implements Producto {
-	
+
 	private String nombre;
 	private int precioBase;
 
@@ -16,15 +16,10 @@ public class ProductoMenu implements Producto {
 
 
 	public String generarTextoFactura() {
-
-		return (nombre+" ".repeat(40-nombre.length())+precioBase);
+		return (nombre+" ".repeat(40-nombre.length())+"$"+precioBase);
 	}
 
 	public int getPrecio() {
 		return precioBase;
-	}
-	
-	public String genererarTextoFactura() {
-		return nombre + " ...... $" + precioBase;
 	}
 }

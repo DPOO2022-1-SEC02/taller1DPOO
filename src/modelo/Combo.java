@@ -33,7 +33,7 @@ public class Combo implements Producto {
 
     @Override
     public String generarTextoFactura() {
-        return null;
+        return (nombreCombo+" ".repeat(40-nombreCombo.length())+"$"+getPrecio());
     }
 
     public String genererarTextoFactura() {

@@ -9,7 +9,8 @@ public class Pedido {
     private int idPedido;
     private String nombreCliente;
     private String direccionCliente;
-    private ArrayList<ProductoMenu> itemsPedido;
+    private ArrayList<Producto> itemsPedido;
+    private int numeroItems;
 
     public Pedido(int idPedido, int numeroPedidos, String nombreCliente, String direccionCliente) {
         this.numeroPedidos = numeroPedidos;
@@ -25,13 +26,18 @@ public class Pedido {
         return this.idPedido;
     }
 
-    public void agregarProducto(ProductoMenu nuevoItem) {
+    public void agregarProducto(Producto nuevoItem) {
         itemsPedido.add(nuevoItem);
+        numeroItems++;
+    }
+
+    public int getCantidadItems(){
+        return numeroItems;
     }
 
     private int getPrecioPedido() {
         int precio = 0;
-        for (ProductoMenu item : itemsPedido) {
+        for (Producto item : itemsPedido) {
             precio += item.getPrecio();
         }
         return precio;
@@ -42,7 +48,7 @@ public class Pedido {
         String textoFactura = "              Factura de compra\n";
         textoFactura += ("Nombre del cliente: " + nombreCliente + "\n");
         textoFactura += ("Dirección del cliente: " + direccionCliente + "\n");
-        for (ProductoMenu producto : this.itemsPedido) {
+        for (Producto producto : itemsPedido) {
             System.out.println(producto.getNombre());
             textoFactura += (producto.generarTextoFactura() + "\n");
         }
@@ -56,7 +62,7 @@ public class Pedido {
 
             if (archivo.createNewFile()) {
             } else {
-                System.err.println("File already exists");
+                System.out.println("⚠️ File already exists");
             }
 
             BufferedWriter bw = new BufferedWriter(new FileWriter(archivo));

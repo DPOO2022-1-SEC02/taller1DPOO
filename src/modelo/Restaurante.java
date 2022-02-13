@@ -109,26 +109,79 @@ public class Restaurante {
 
         while (continuar) {
 
-            System.out.println("Selecciona una de las opciones que tenemos para tí.");
-            System.out.println("Presiona 0 si quieres salir.");
-            for (ProductoMenu producto : getMenuBase()) {
-                System.out.println(cont + ". " + producto.getNombre() + " : " + producto.getPrecio());
-                cont++;
-            }
+            cont = showInfo(cont);
+            System.out.println(cont);
+
+
             int seleccionado = Integer.parseInt(input("Selecciona una opcion"));
-            if (seleccionado>cont-1){
-                System.err.println("\nPor favor selecciona una opción valida.\n");
+            if (seleccionado > cont - 1) {
+                System.out.println("\n⚠️Por favor selecciona una opción valida.⚠️\n");
                 continue;
             }
             if (seleccionado == 0) {
+                if (pedido.getCantidadItems() != 0) {
+                    pedidos.add(pedido);
+                }
+
+
                 continuar = false;
             } else {
-                pedido.agregarProducto(menuBase.get(seleccionado - 1));
-                pedidos.add(pedido);
+                if (seleccionado > menuBase.size()) {
+                    seleccionado -= menuBase.size();
+                    pedido.agregarProducto(combos.get(seleccionado - 1));
+                } else {
+                    int seleccionarExtra = Integer.parseInt(input("""
+                            Deseas agregarle o quitarle algo a tu hamburguesa?
+                            1. Sí
+                            2. No"""));
+                    if (seleccionarExtra == 1) {
+                        showIngredientes();
+                    }
+                    pedido.agregarProducto(menuBase.get(seleccionado - 1));
+                }
                 cont = 1;
             }
 
         }
+    }
+
+    private void showIngredientes() {
+        System.out.println("\nIngredientes:\n ");
+        for (Ingrediente ingrediente : ingredientes) {
+            System.out.println(ingrediente);
+        }
+    }
+
+
+    private int showInfo(int cont) {
+
+        System.out.println("\nMenú clásico: \n");
+        for (ProductoMenu producto : menuBase) {
+            System.out.println(cont + ". " + producto.getNombre() + " : " + producto.getPrecio());
+            cont++;
+        }
+
+        System.out.println("\nCombos: \n");
+        for (Combo combo : combos) {
+            System.out.println(cont + ". " + combo.getNombre() + ":" + combo.getPrecio());
+            cont++;
+        }
+        return cont;
+    }
+
+
+    private void mostrarMenu(int cont) {
+
+    }
+
+
+    private void mostrarCombos(int contMenu) {
+        int cont = 0;
+
+    }
+
+    private void mostrarCombos() {
+
     }
 
     public ArrayList<ProductoMenu> getMenuBase() {
@@ -153,10 +206,10 @@ public class Restaurante {
     }*/
 
     public void cerrarYGuardarPedido() throws Exception {
-        System.out.println(id_actual);
         Pedido cosa = pedidos.get(id_actual);
-        cosa.guardarFactura(new File("./data/facturas/"+id_actual+".txt"));
-        pedidoEnCurso=0;
+        System.out.println(cosa.getIdPedido());
+        cosa.guardarFactura(new File("./data/facturas/" + id_actual + ".txt"));
+        pedidoEnCurso = 0;
         id_actual++;
 
     }
