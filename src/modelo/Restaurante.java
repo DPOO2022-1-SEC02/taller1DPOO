@@ -10,8 +10,8 @@ public class Restaurante {
     private ArrayList<Ingrediente> ingredientes;
     private ArrayList<ProductoMenu> menuBase;
     private ArrayList<Combo> combos;
-    private HashMap<Integer,Pedido> pedidos;
-    private Pedido pedidoEnCurso;
+    private ArrayList<Pedido> pedidos;
+    private int pedidoEnCurso;
 
     private Procesamiento procesador = new Procesamiento();
 
@@ -20,7 +20,8 @@ public class Restaurante {
         this.ingredientes = new ArrayList<>();
         this.menuBase = new ArrayList<>();
         this.combos = new ArrayList<>();
-        this.pedidos = new HashMap<>();
+        this.pedidos = new ArrayList<>();
+        this.pedidoEnCurso = 0;
     }
 
 
@@ -64,8 +65,8 @@ public class Restaurante {
             Double descuento = Double.parseDouble(partes[1].replace("%", ""));
             descuento = descuento / 100;
             combo = new Combo(nombreCombo, descuento);
-            for (int i=2;i<partes.length;i++){
-                combo.agregarItemACombo(procesador.buscarProducto(menuBase,partes[i]));
+            for (int i = 2; i < partes.length; i++) {
+                combo.agregarItemACombo(procesador.buscarProducto(menuBase, partes[i]));
             }
             combos.add(combo);
 
@@ -101,26 +102,30 @@ public class Restaurante {
     int id_actual = 0;
 
     public void iniciarPedido(String nombreCliente, String direccionCliente) {
+        pedidoEnCurso = id_actual;
         boolean continuar = true;
-        int cont=1;
-        Pedido pedido = new Pedido(id_actual,0,nombreCliente,direccionCliente);
-        id_actual++;
+        int cont = 1;
+        Pedido pedido = new Pedido(id_actual, 0, nombreCliente, direccionCliente);
 
-        while (continuar){
+        while (continuar) {
+
             System.out.println("Selecciona una de las opciones que tenemos para tí.");
             System.out.println("Presiona 0 si quieres salir.");
-            for(ProductoMenu producto: getMenuBase()){
-                System.out.println(cont+". "+producto.getNombre()+" : "+producto.getPrecio());
+            for (ProductoMenu producto : getMenuBase()) {
+                System.out.println(cont + ". " + producto.getNombre() + " : " + producto.getPrecio());
                 cont++;
             }
             int seleccionado = Integer.parseInt(input("Selecciona una opcion"));
-            if (seleccionado==0) {
-                continuar=false;
+            if (seleccionado>cont-1){
+                System.err.println("\nPor favor selecciona una opción valida.\n");
+                continue;
             }
-            else {
+            if (seleccionado == 0) {
+                continuar = false;
+            } else {
                 pedido.agregarProducto(menuBase.get(seleccionado - 1));
+                pedidos.add(pedido);
                 cont = 1;
-                pedidos.put(id_actual,pedido);
             }
 
         }
@@ -134,7 +139,7 @@ public class Restaurante {
         return this.ingredientes;
     }
 
-    public ArrayList<Combo> getCombos(){
+    public ArrayList<Combo> getCombos() {
         return this.combos;
     }
 
@@ -147,7 +152,13 @@ public class Restaurante {
     public Pedido getPedidoPorId(int id) {
     }*/
 
-    public void cerrarYGuardarPedido() {
+    public void cerrarYGuardarPedido() throws Exception {
+        System.out.println(id_actual);
+        Pedido cosa = pedidos.get(id_actual);
+        cosa.guardarFactura(new File("./data/facturas/"+id_actual+".txt"));
+        pedidoEnCurso=0;
+        id_actual++;
+
     }
 
     public String input(String mensaje) {

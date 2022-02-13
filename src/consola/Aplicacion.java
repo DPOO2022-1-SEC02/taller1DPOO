@@ -68,8 +68,11 @@ public class Aplicacion {
 
 
                 }
+                */
+
+
                 case (4) -> restaurante.cerrarYGuardarPedido();
-*                case (5) -> {
+/*                case (5) -> {
 *                    id = pedirId();
 *                    restaurante.getPedidoPorId(id);
 *                }
@@ -127,8 +130,6 @@ public class Aplicacion {
         }
         return null;
     }
-
-
 }
 
 

@@ -25,7 +25,12 @@ public class ProductoAjustado implements Producto {
 	public String getNombre() {
 		return base.getNombre();
 	}
-	
+
+	@Override
+	public String generarTextoFactura() {
+		return null;
+	}
+
 	public String genererarTextoFactura() {
 		return base.genererarTextoFactura();
 	}

@@ -13,7 +13,13 @@ public class ProductoMenu implements Producto {
 	public String getNombre() {
 		return nombre;
 	}
-	
+
+
+	public String generarTextoFactura() {
+
+		return (nombre+" ".repeat(40-nombre.length())+precioBase);
+	}
+
 	public int getPrecio() {
 		return precioBase;
 	}

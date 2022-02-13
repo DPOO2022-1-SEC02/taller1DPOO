@@ -30,8 +30,13 @@ public class Combo implements Producto {
     public String getNombre() {
         return this.nombreCombo;
     }
-    
-	public String genererarTextoFactura() {
+
+    @Override
+    public String generarTextoFactura() {
+        return null;
+    }
+
+    public String genererarTextoFactura() {
 		
 		return null;
 	}
