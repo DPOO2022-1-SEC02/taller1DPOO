@@ -13,8 +13,9 @@ public class Restaurante {
     private ArrayList<Combo> combos;
     private ArrayList<Pedido> pedidos;
     private int pedidoEnCurso;
-
     private Procesamiento procesador = new Procesamiento();
+
+
 
 
     public Restaurante() {
@@ -24,6 +25,10 @@ public class Restaurante {
         this.pedidos = new ArrayList<>();
         this.pedidoEnCurso = 0;
     }
+
+
+
+
 
 
     public void cargarInformacionRestaurante(File archivoIngredientes, File archivoMenu, File archivoCombos) throws Exception {
@@ -180,8 +185,7 @@ public class Restaurante {
         while (continuar) {
             int seleccion = Integer.parseInt(input("""
                     1. Ver menú clásico.
-                    2. Ver combos
-                    """));
+                    2. Ver combos"""));
             if (seleccion == 1) {
                 mostrarMenuBase();
                 ProductoAjustado modificado=null;
@@ -190,26 +194,25 @@ public class Restaurante {
                 boolean continueIngr = true;
                 while (continueIngr) {
                     int extra = Integer.parseInt(input("""
-                            Deseas agregar o quitar algo a tu producto?
+                            Deseas agregar o quitar algo extra a tu producto?
                             1. Poner
                             2. Quitar
-                            3. No
-                            """));
+                            3. No"""));
                     if (extra == 1 || extra == 2) {
                         Ingrediente ingSeleccionado;
                         if (modificado == null) {
                             modificado = new ProductoAjustado(producto);
                         }
                         showIngredientes();
-                        int ingredienteNum = Integer.parseInt(input("Escribe el ingrediente que deseas"));
+                        int ingredienteNum = Integer.parseInt(input("Escribe el ingrediente que deseas"))-1;
 
                         ingSeleccionado = ingredientes.get(ingredienteNum);
                         if (extra == 1) modificado.agregarAlgo(ingSeleccionado);
                         else modificado.quitarAlgo(ingSeleccionado);
-                        pedido.agregarProducto(modificado);
                     }
                     else{
                         continueIngr=false;
+                        pedido.agregarProducto(modificado);
                     }
                 }
 
@@ -257,9 +260,10 @@ public class Restaurante {
     public Pedido getPedidoEnCurso() {
 
     }
-
+*/
     public Pedido getPedidoPorId(int id) {
-    }*/
+        return pedidos.get(id);
+    }
 
     public void cerrarYGuardarPedido() throws Exception {
         Pedido cosa = pedidos.get(id_actual);

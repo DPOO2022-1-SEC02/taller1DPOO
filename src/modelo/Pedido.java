@@ -12,6 +12,8 @@ public class Pedido {
     private ArrayList<Producto> itemsPedido;
     private int numeroItems;
 
+    private Restaurante restaurante = new Restaurante();
+
     public Pedido(int idPedido, int numeroPedidos, String nombreCliente, String direccionCliente) {
         this.numeroPedidos = numeroPedidos;
         this.idPedido = idPedido;
@@ -44,12 +46,11 @@ public class Pedido {
     }
 
 
-    private String generarTextoFactura() {
+    public String generarTextoFactura() {
         String textoFactura = "              Factura de compra\n";
         textoFactura += ("Nombre del cliente: " + nombreCliente + "\n");
         textoFactura += ("Dirección del cliente: " + direccionCliente + "\n");
         for (Producto producto : itemsPedido) {
-            System.out.println(producto.getNombre());
             textoFactura += (producto.generarTextoFactura() + "\n");
         }
         textoFactura += ("Precio total " + " ".repeat(27) + getPrecioPedido()) + "\n";
@@ -69,7 +70,10 @@ public class Pedido {
             String txtFactura = generarTextoFactura();
             bw.write(txtFactura);
             bw.close();
+
+
         } catch (Exception i) {
+            System.out.println(i);
             System.err.println("⚠️Hubo un error");
         }
     }

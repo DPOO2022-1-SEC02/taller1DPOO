@@ -70,19 +70,29 @@ public class Aplicacion {
 
 
                 case (4) -> restaurante.cerrarYGuardarPedido();
-                /*                case (5) -> {
-                 *                    id = pedirId();
-                 *                    restaurante.getPedidoPorId(id);
-                 *                }
-                 */
+
+                case (5) -> {
+                    id = pedirId();
+                    Pedido pedido = restaurante.getPedidoPorId(id);
+                    if (pedido == null) {
+                        System.out.println("⚠Por favor ingrese un id válido");
+                    } else {
+                        showInfoPedido(pedido);
+                    }
+                }
                 case (6) -> continuar = false;
             }
 
         }
     }
 
+    public void showInfoPedido(Pedido pedido) {
+        System.out.println("Id del pedido: " + pedido.getIdPedido() + "\n");
+        System.out.println(pedido.generarTextoFactura());
+    }
+
     public int pedirId() {
-        return Integer.parseInt(input("Escribe el id del pedido."));
+        return Integer.parseInt(input("Escribe el id del pedido"));
     }
 
     public void mostrarMenu() {
@@ -131,8 +141,6 @@ public class Aplicacion {
             cont++;
         }
     }
-
-
 
 
     public String input(String mensaje) {
