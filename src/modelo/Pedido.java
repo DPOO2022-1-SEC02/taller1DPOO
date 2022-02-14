@@ -70,7 +70,7 @@ public class Pedido {
             bw.write(txtFactura);
             bw.close();
         } catch (Exception i) {
-            System.out.println("Hubo un error");
+            System.err.println("⚠️Hubo un error");
         }
     }
 }

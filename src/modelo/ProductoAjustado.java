@@ -13,6 +13,13 @@ public class ProductoAjustado implements Producto {
 		agregados = new ArrayList<Ingrediente>();
 		eliminados = new ArrayList<Ingrediente>();
 	}
+
+	public void agregarAlgo(Ingrediente ingrediente){
+		base.addIngredient(ingrediente.getNombre(),ingrediente.getCostoAdicional());
+	}
+	public void quitarAlgo(Ingrediente ingrediente){
+		base.deleteIngredient(ingrediente.getNombre());
+	}
 	
 	public int getPrecio() {
 		int rta = base.getPrecio();

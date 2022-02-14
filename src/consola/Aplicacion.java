@@ -13,11 +13,9 @@ public class Aplicacion {
     private Restaurante restaurante = new Restaurante();
 
 
-
     private final File archivoMenu = new File("./data/menu.txt");
     private final File archivoCombos = new File("./data/combos.txt");
     private final File archivoIngredientes = new File("./data/ingredientes.txt");
-
 
 
     public static void main(String[] args) throws Exception {
@@ -28,15 +26,15 @@ public class Aplicacion {
     }
 
     public void ejecutarOpcion() throws Exception {
-        int opcion ;
+        int opcion;
         boolean continuar = true;
         int id;
-        restaurante.cargarInformacionRestaurante(archivoIngredientes,archivoMenu,archivoCombos);
+        restaurante.cargarInformacionRestaurante(archivoIngredientes, archivoMenu, archivoCombos);
 
         System.out.print("""
-                              Bienvenido a El Corral
-                              Estas son las opciones que tenemos para ti:
-                              """);
+                Bienvenido a El Corral
+                Estas son las opciones que tenemos para ti:
+                """);
         while (continuar) {
             mostrarMenu();
             opcion = Integer.parseInt(input("Por favor selecciona una opción"));
@@ -48,10 +46,10 @@ public class Aplicacion {
                 case (2) -> {
                     String nombreCliente = input("Escriba el nombre del cliente");
                     String direccionCliente = input("Escriba la dirección del cliente");
+
                     restaurante.iniciarPedido(nombreCliente, direccionCliente);
 
                     //mostrarMenuBase();
-
 
 
                 }
@@ -72,11 +70,11 @@ public class Aplicacion {
 
 
                 case (4) -> restaurante.cerrarYGuardarPedido();
-/*                case (5) -> {
-*                    id = pedirId();
-*                    restaurante.getPedidoPorId(id);
-*                }
-*/
+                /*                case (5) -> {
+                 *                    id = pedirId();
+                 *                    restaurante.getPedidoPorId(id);
+                 *                }
+                 */
                 case (6) -> continuar = false;
             }
 
@@ -99,25 +97,43 @@ public class Aplicacion {
     }
 
 
-    public void mostrarMenuBase(){
-        ArrayList<ProductoMenu> menuCompleto = restaurante.getMenuBase();
-        ArrayList<Combo> combos = restaurante.getCombos();
-        int cont = 1;
-        System.out.println("\nMenú El Corral: \n");
-        for (ProductoMenu producto : menuCompleto) {
-            System.out.println(cont+"."+producto.getNombre() + " " + producto.getPrecio());
-            cont++;
-        }
-        System.out.println("\n");
+    public void mostrarAlgo() {
+        int opcion = Integer.parseInt(input("""
+                1. Producto clásico.
+                2. Combos.
+                Selecciona una de las opciones
+                """));
 
-        System.out.println("Combos:");
-        for (Combo combo : combos) {
-            System.out.println(cont+". "+combo.getNombre() + " " + combo.getPrecio());
-            cont++;
+        if (opcion == 1) {
+            mostrarMenuBase();
+
+        } else {
+            mostrarCombos();
         }
-        System.out.println("\n");
+
 
     }
+
+    public void mostrarCombos() {
+        int cont = 0;
+        System.out.println("\nCombos: \n");
+        for (Combo combo : restaurante.getCombos()) {
+            System.out.println(cont + ". " + combo.getNombre() + ":" + combo.getPrecio());
+            cont++;
+        }
+    }
+
+    public void mostrarMenuBase() {
+        int cont = 0;
+        System.out.println("\nMenú clásico: \n");
+        for (ProductoMenu producto : restaurante.getMenuBase()) {
+            System.out.println(cont + ". " + producto.getNombre() + " : " + producto.getPrecio());
+            cont++;
+        }
+    }
+
+
+
 
     public String input(String mensaje) {
         try {

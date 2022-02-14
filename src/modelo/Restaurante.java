@@ -1,5 +1,6 @@
 package modelo;
 
+import consola.Aplicacion;
 import procesamiento.Procesamiento;
 
 import java.io.*;
@@ -76,6 +77,29 @@ public class Restaurante {
     }
 
 
+    private void mostrarInfo() {
+        mostrarCombos();
+        mostrarMenuBase();
+    }
+
+    private void mostrarCombos() {
+        int cont = 0;
+        System.out.println("\nCombos: \n");
+        for (Combo combo : combos) {
+            System.out.println(cont + ". " + combo.getNombre() + ":" + combo.getPrecio());
+            cont++;
+        }
+    }
+
+    public void mostrarMenuBase() {
+        int cont = 0;
+        System.out.println("\nMenú clásico: \n");
+        for (ProductoMenu producto : menuBase) {
+            System.out.println(cont + ". " + producto.getNombre() + " : " + producto.getPrecio());
+            cont++;
+        }
+    }
+
     private void cargaIngredientes(File archivoIngredientes) throws Exception {
 
 
@@ -87,10 +111,10 @@ public class Restaurante {
         while (line != null) {
 
             ingInfo = line.split(";");
-            String nombre = ingInfo[0];//esto viene siendo el nombre del ingrediente
+            String nombre = ingInfo[0];
             int precio = Integer.parseInt(ingInfo[1]);
             ingrediente = new Ingrediente(nombre, precio);
-            ingredientes.add(ingrediente); //y el nombre de la 69 es el que se pone aquí
+            ingredientes.add(ingrediente);
 
             line = br.readLine();
         }
@@ -101,88 +125,120 @@ public class Restaurante {
 
     int id_actual = 0;
 
+//    public void iniciarPedido(String nombreCliente, String direccionCliente) {
+//        pedidoEnCurso = id_actual;
+//        boolean continuar = true;
+//        int cont = 1;
+//        Pedido pedido = new Pedido(id_actual, 0, nombreCliente, direccionCliente);
+//
+//        while (continuar) {
+//
+//            cont = showInfo(cont);
+//            System.out.println(cont);
+//
+//
+//            int seleccionado = Integer.parseInt(input("Selecciona una opcion"));
+//            if (seleccionado > cont - 1) {
+//                System.out.println("\n⚠️Por favor selecciona una opción valida.⚠️\n");
+//                continue;
+//            }
+//            if (seleccionado == 0) {
+//                if (pedido.getCantidadItems() != 0) {
+//                    pedidos.add(pedido);
+//                }
+//
+//
+//                continuar = false;
+//            } else {
+//                if (seleccionado > menuBase.size()) {
+//                    seleccionado -= menuBase.size();
+//                    pedido.agregarProducto(combos.get(seleccionado - 1));
+//                } else {
+//                    int seleccionarExtra = Integer.parseInt(input("""
+//                            Deseas agregarle o quitarle algo a tu hamburguesa?
+//                            1. Sí
+//                            2. No"""));
+//                    if (seleccionarExtra == 1) {
+//                        showIngredientes();
+//                    }
+//                    pedido.agregarProducto(menuBase.get(seleccionado - 1));
+//                }
+//                cont = 1;
+//            }
+//
+//        }
+//    }
+
     public void iniciarPedido(String nombreCliente, String direccionCliente) {
         pedidoEnCurso = id_actual;
         boolean continuar = true;
-        int cont = 1;
+
         Pedido pedido = new Pedido(id_actual, 0, nombreCliente, direccionCliente);
 
+        ProductoMenu producto;
+
         while (continuar) {
-
-            cont = showInfo(cont);
-            System.out.println(cont);
-
-
-            int seleccionado = Integer.parseInt(input("Selecciona una opcion"));
-            if (seleccionado > cont - 1) {
-                System.out.println("\n⚠️Por favor selecciona una opción valida.⚠️\n");
-                continue;
-            }
-            if (seleccionado == 0) {
-                if (pedido.getCantidadItems() != 0) {
-                    pedidos.add(pedido);
-                }
-
-
-                continuar = false;
-            } else {
-                if (seleccionado > menuBase.size()) {
-                    seleccionado -= menuBase.size();
-                    pedido.agregarProducto(combos.get(seleccionado - 1));
-                } else {
-                    int seleccionarExtra = Integer.parseInt(input("""
-                            Deseas agregarle o quitarle algo a tu hamburguesa?
-                            1. Sí
-                            2. No"""));
-                    if (seleccionarExtra == 1) {
+            int seleccion = Integer.parseInt(input("""
+                    1. Ver menú clásico.
+                    2. Ver combos
+                    """));
+            if (seleccion == 1) {
+                mostrarMenuBase();
+                ProductoAjustado modificado=null;
+                int prSeleccion = Integer.parseInt(input("Selcciona un producto por favor"));
+                producto = menuBase.get(prSeleccion);
+                boolean continueIngr = true;
+                while (continueIngr) {
+                    int extra = Integer.parseInt(input("""
+                            Deseas agregar o quitar algo a tu producto?
+                            1. Poner
+                            2. Quitar
+                            3. No
+                            """));
+                    if (extra == 1 || extra == 2) {
+                        Ingrediente ingSeleccionado;
+                        if (modificado == null) {
+                            modificado = new ProductoAjustado(producto);
+                        }
                         showIngredientes();
-                    }
-                    pedido.agregarProducto(menuBase.get(seleccionado - 1));
-                }
-                cont = 1;
-            }
+                        int ingredienteNum = Integer.parseInt(input("Escribe el ingrediente que deseas"));
 
+                        ingSeleccionado = ingredientes.get(ingredienteNum);
+                        if (extra == 1) modificado.agregarAlgo(ingSeleccionado);
+                        else modificado.quitarAlgo(ingSeleccionado);
+                        pedido.agregarProducto(modificado);
+                    }
+                    else{
+                        continueIngr=false;
+                    }
+                }
+
+
+            } else if (seleccion == 2) {
+                mostrarCombos();
+                int cmSeleccion = Integer.parseInt(input("Selecciona uno de los combos que tenemos para tí"));
+                Combo combo = combos.get(cmSeleccion);
+                pedido.agregarProducto(combo);
+            } else {
+                if (pedido.getCantidadItems() != 0) pedidos.add(pedido);
+                continuar = false;
+            }
         }
+
+
     }
+
 
     private void showIngredientes() {
+        int cont = 1;
         System.out.println("\nIngredientes:\n ");
         for (Ingrediente ingrediente : ingredientes) {
-            System.out.println(ingrediente);
-        }
-    }
-
-
-    private int showInfo(int cont) {
-
-        System.out.println("\nMenú clásico: \n");
-        for (ProductoMenu producto : menuBase) {
-            System.out.println(cont + ". " + producto.getNombre() + " : " + producto.getPrecio());
+            System.out.println(cont + ". " + ingrediente.getNombre() + ": " + ingrediente.getCostoAdicional());
             cont++;
         }
 
-        System.out.println("\nCombos: \n");
-        for (Combo combo : combos) {
-            System.out.println(cont + ". " + combo.getNombre() + ":" + combo.getPrecio());
-            cont++;
-        }
-        return cont;
     }
 
-
-    private void mostrarMenu(int cont) {
-
-    }
-
-
-    private void mostrarCombos(int contMenu) {
-        int cont = 0;
-
-    }
-
-    private void mostrarCombos() {
-
-    }
 
     public ArrayList<ProductoMenu> getMenuBase() {
         return this.menuBase;
