@@ -44,12 +44,11 @@ public class Pedido {
     }
 
 
-    private String generarTextoFactura() {
+    public String generarTextoFactura() {
         String textoFactura = "              Factura de compra\n";
         textoFactura += ("Nombre del cliente: " + nombreCliente + "\n");
         textoFactura += ("Dirección del cliente: " + direccionCliente + "\n");
         for (Producto producto : itemsPedido) {
-            System.out.println(producto.getNombre());
             textoFactura += (producto.generarTextoFactura() + "\n");
         }
         textoFactura += ("Precio total " + " ".repeat(27) + getPrecioPedido()) + "\n";

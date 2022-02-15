@@ -31,51 +31,36 @@ public class Aplicacion {
         int id;
         restaurante.cargarInformacionRestaurante(archivoIngredientes, archivoMenu, archivoCombos);
 
-        System.out.print("""
-                Bienvenido a El Corral
-                Estas son las opciones que tenemos para ti:
-                """);
         while (continuar) {
+
             mostrarMenu();
-            opcion = Integer.parseInt(input("Por favor selecciona una opción"));
+            opcion = Integer.parseInt(input("Por favor selecciona una opcion"));
             switch (opcion) {
 
 
-                case (1) -> mostrarMenuBase();
+                case (1) -> {
+                    restaurante.mostrarMenuBase();
+                    restaurante.mostrarCombos();
+                }
 
                 case (2) -> {
                     String nombreCliente = input("Escriba el nombre del cliente");
-                    String direccionCliente = input("Escriba la dirección del cliente");
+                    String direccionCliente = input("Escriba la direccion del cliente");
 
                     restaurante.iniciarPedido(nombreCliente, direccionCliente);
 
-                    //mostrarMenuBase();
-
-
                 }
 
 
-/*                case (3) -> {
+                case (3) -> restaurante.cerrarYGuardarPedido();
+                case (4) -> {
                     id = pedirId();
-                    ArrayList<Ingrediente> ingredientes = restaurante.getIngredientes();
-                    for (Ingrediente ingrediente : ingredientes) {
-                        System.out.println(ingrediente.getNombre() + " " + ingrediente.getCostoAdicional());
-                    }
-                    System.out.println("Selecciona un ingrediente: ");
-                    Pedido actual = restaurante.getPedidoEnCurso();
-
-
+                    Pedido pedido = restaurante.getPedidoPorId(id);
+                    System.out.println("\nId de pedido: " + id);
+                    System.out.println(pedido.generarTextoFactura());
                 }
-                */
 
-
-                case (4) -> restaurante.cerrarYGuardarPedido();
-                /*                case (5) -> {
-                 *                    id = pedirId();
-                 *                    restaurante.getPedidoPorId(id);
-                 *                }
-                 */
-                case (6) -> continuar = false;
+                case (5) -> continuar = false;
             }
 
         }
@@ -86,50 +71,16 @@ public class Aplicacion {
     }
 
     public void mostrarMenu() {
-        System.out.print("""
-                1. Mostrar el menú
+        System.out.print("""              
+                
+                Bienvenido a El Corral
+                Estas son las opciones que tenemos para ti:    
+                \n1. Mostrar el menu
                 2. Iniciar un nuevo pedido
-                3. Agregar un elemento a un pedido
-                4. Cerrar un pedido y guardar la factura
-                5. Consultar la información de un pedido dado su id
-                6. Salir de la aplicación
+                3. Cerrar un pedido y guardar la factura
+                4. Consultar la información de un pedido dado su id
+                5. Salir de la aplicacion
                 """);
-    }
-
-
-    public void mostrarAlgo() {
-        int opcion = Integer.parseInt(input("""
-                1. Producto clásico.
-                2. Combos.
-                Selecciona una de las opciones
-                """));
-
-        if (opcion == 1) {
-            mostrarMenuBase();
-
-        } else {
-            mostrarCombos();
-        }
-
-
-    }
-
-    public void mostrarCombos() {
-        int cont = 0;
-        System.out.println("\nCombos: \n");
-        for (Combo combo : restaurante.getCombos()) {
-            System.out.println(cont + ". " + combo.getNombre() + ":" + combo.getPrecio());
-            cont++;
-        }
-    }
-
-    public void mostrarMenuBase() {
-        int cont = 0;
-        System.out.println("\nMenú clásico: \n");
-        for (ProductoMenu producto : restaurante.getMenuBase()) {
-            System.out.println(cont + ". " + producto.getNombre() + " : " + producto.getPrecio());
-            cont++;
-        }
     }
 
 

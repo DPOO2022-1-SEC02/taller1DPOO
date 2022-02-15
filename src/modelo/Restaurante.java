@@ -1,11 +1,9 @@
 package modelo;
 
-import consola.Aplicacion;
 import procesamiento.Procesamiento;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Restaurante {
     private ArrayList<Ingrediente> ingredientes;
@@ -82,20 +80,20 @@ public class Restaurante {
         mostrarMenuBase();
     }
 
-    private void mostrarCombos() {
-        int cont = 0;
+    public void mostrarCombos() {
+        int cont = 1;
         System.out.println("\nCombos: \n");
         for (Combo combo : combos) {
-            System.out.println(cont + ". " + combo.getNombre() + ":" + combo.getPrecio());
+            System.out.println(cont + ". " + combo.getNombre() + " : $" + combo.getPrecio());
             cont++;
         }
     }
 
     public void mostrarMenuBase() {
-        int cont = 0;
+        int cont = 1;
         System.out.println("\nMenú clásico: \n");
         for (ProductoMenu producto : menuBase) {
-            System.out.println(cont + ". " + producto.getNombre() + " : " + producto.getPrecio());
+            System.out.println(cont + ". " + producto.getNombre() + " : $" + producto.getPrecio());
             cont++;
         }
     }
@@ -125,100 +123,25 @@ public class Restaurante {
 
     int id_actual = 0;
 
-//    public void iniciarPedido(String nombreCliente, String direccionCliente) {
-//        pedidoEnCurso = id_actual;
-//        boolean continuar = true;
-//        int cont = 1;
-//        Pedido pedido = new Pedido(id_actual, 0, nombreCliente, direccionCliente);
-//
-//        while (continuar) {
-//
-//            cont = showInfo(cont);
-//            System.out.println(cont);
-//
-//
-//            int seleccionado = Integer.parseInt(input("Selecciona una opcion"));
-//            if (seleccionado > cont - 1) {
-//                System.out.println("\n⚠️Por favor selecciona una opción valida.⚠️\n");
-//                continue;
-//            }
-//            if (seleccionado == 0) {
-//                if (pedido.getCantidadItems() != 0) {
-//                    pedidos.add(pedido);
-//                }
-//
-//
-//                continuar = false;
-//            } else {
-//                if (seleccionado > menuBase.size()) {
-//                    seleccionado -= menuBase.size();
-//                    pedido.agregarProducto(combos.get(seleccionado - 1));
-//                } else {
-//                    int seleccionarExtra = Integer.parseInt(input("""
-//                            Deseas agregarle o quitarle algo a tu hamburguesa?
-//                            1. Sí
-//                            2. No"""));
-//                    if (seleccionarExtra == 1) {
-//                        showIngredientes();
-//                    }
-//                    pedido.agregarProducto(menuBase.get(seleccionado - 1));
-//                }
-//                cont = 1;
-//            }
-//
-//        }
-//    }
-
     public void iniciarPedido(String nombreCliente, String direccionCliente) {
         pedidoEnCurso = id_actual;
         boolean continuar = true;
 
         Pedido pedido = new Pedido(id_actual, 0, nombreCliente, direccionCliente);
 
-        ProductoMenu producto;
 
         while (continuar) {
             int seleccion = Integer.parseInt(input("""
                     1. Ver menú clásico.
                     2. Ver combos
-                    """));
+                    0. Volver"""));
             if (seleccion == 1) {
-                mostrarMenuBase();
-                ProductoAjustado modificado=null;
-                int prSeleccion = Integer.parseInt(input("Selcciona un producto por favor"));
-                producto = menuBase.get(prSeleccion);
-                boolean continueIngr = true;
-                while (continueIngr) {
-                    int extra = Integer.parseInt(input("""
-                            Deseas agregar o quitar algo a tu producto?
-                            1. Poner
-                            2. Quitar
-                            3. No
-                            """));
-                    if (extra == 1 || extra == 2) {
-                        Ingrediente ingSeleccionado;
-                        if (modificado == null) {
-                            modificado = new ProductoAjustado(producto);
-                        }
-                        showIngredientes();
-                        int ingredienteNum = Integer.parseInt(input("Escribe el ingrediente que deseas"));
 
-                        ingSeleccionado = ingredientes.get(ingredienteNum);
-                        if (extra == 1) modificado.agregarAlgo(ingSeleccionado);
-                        else modificado.quitarAlgo(ingSeleccionado);
-                        pedido.agregarProducto(modificado);
-                    }
-                    else{
-                        continueIngr=false;
-                    }
-                }
-
+                agregarProducto(pedido);
 
             } else if (seleccion == 2) {
-                mostrarCombos();
-                int cmSeleccion = Integer.parseInt(input("Selecciona uno de los combos que tenemos para tí"));
-                Combo combo = combos.get(cmSeleccion);
-                pedido.agregarProducto(combo);
+                agregarCombo(pedido);
+
             } else {
                 if (pedido.getCantidadItems() != 0) pedidos.add(pedido);
                 continuar = false;
@@ -229,6 +152,48 @@ public class Restaurante {
     }
 
 
+    private void agregarCombo(Pedido pedido) {
+        mostrarCombos();
+        int cmSeleccion = Integer.parseInt(input("Selecciona uno de los combos que tenemos para tí")) - 1;
+        Combo combo = combos.get(cmSeleccion);
+        pedido.agregarProducto(combo);
+    }
+
+
+    private void agregarProducto(Pedido pedido) {
+        mostrarMenuBase();
+        ProductoAjustado modificado = null;
+        int prSeleccion = Integer.parseInt(input("Selcciona un producto por favor")) - 1;
+        ProductoMenu producto = menuBase.get(prSeleccion);
+        boolean continueIngr = true;
+        while (continueIngr) {
+            int extra = Integer.parseInt(input("""
+                    Deseas agregar o quitar algo a tu producto?
+                    1. Poner
+                    2. Quitar
+                    3. No"""));
+            if (extra == 1 || extra == 2) {
+                Ingrediente ingSeleccionado;
+                if (modificado == null) {
+                    modificado = new ProductoAjustado(producto);
+                }
+                showIngredientes();
+                int ingredienteNum = Integer.parseInt(input("Escribe el ingrediente que deseas")) - 1;
+
+                ingSeleccionado = ingredientes.get(ingredienteNum);
+                if (extra == 1) modificado.agregarAlgo(ingSeleccionado);
+                else modificado.quitarAlgo(ingSeleccionado);
+            } else {
+                if (modificado == null) {
+                    pedido.agregarProducto(producto);
+                } else {
+                    pedido.agregarProducto(modificado);
+                }
+                continueIngr = false;
+            }
+        }
+    }
+
     private void showIngredientes() {
         int cont = 1;
         System.out.println("\nIngredientes:\n ");
@@ -238,7 +203,6 @@ public class Restaurante {
         }
 
     }
-
 
     public ArrayList<ProductoMenu> getMenuBase() {
         return this.menuBase;
@@ -252,14 +216,10 @@ public class Restaurante {
         return this.combos;
     }
 
-/*
-*   Ya veremos dijo el ciego.jpg
-    public Pedido getPedidoEnCurso() {
-
-    }
 
     public Pedido getPedidoPorId(int id) {
-    }*/
+        return pedidos.get(id);
+    }
 
     public void cerrarYGuardarPedido() throws Exception {
         Pedido cosa = pedidos.get(id_actual);
