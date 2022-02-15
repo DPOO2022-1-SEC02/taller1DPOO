@@ -12,6 +12,8 @@ public class Pedido {
     private ArrayList<Producto> itemsPedido;
     private int numeroItems;
 
+    private Restaurante restaurante = new Restaurante();
+
     public Pedido(int idPedido, int numeroPedidos, String nombreCliente, String direccionCliente) {
         this.numeroPedidos = numeroPedidos;
         this.idPedido = idPedido;
@@ -68,7 +70,10 @@ public class Pedido {
             String txtFactura = generarTextoFactura();
             bw.write(txtFactura);
             bw.close();
+
+
         } catch (Exception i) {
+            System.out.println(i);
             System.err.println("⚠️Hubo un error");
         }
     }
