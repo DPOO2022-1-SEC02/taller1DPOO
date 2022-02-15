@@ -67,7 +67,7 @@ public class Aplicacion {
     }
 
     public int pedirId() {
-        return Integer.parseInt(input("Escribe el id del pedido."));
+        return Integer.parseInt(input("Escribe el id del pedido"));
     }
 
     public void mostrarMenu() {
@@ -79,8 +79,7 @@ public class Aplicacion {
                 2. Iniciar un nuevo pedido
                 3. Cerrar un pedido y guardar la factura
                 4. Consultar la información de un pedido dado su id
-                5. Salir de la aplicacion
-                """);
+                5. Salir de la aplicacion""");
     }
 
 

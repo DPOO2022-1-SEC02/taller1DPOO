@@ -1,6 +1,5 @@
 package modelo;
 
-import procesamiento.Procesamiento;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -12,7 +11,7 @@ public class Restaurante {
     private ArrayList<Pedido> pedidos;
     private int pedidoEnCurso;
 
-    private Procesamiento procesador = new Procesamiento();
+
 
 
     public Restaurante() {
@@ -65,7 +64,7 @@ public class Restaurante {
             descuento = descuento / 100;
             combo = new Combo(nombreCombo, descuento);
             for (int i = 2; i < partes.length; i++) {
-                combo.agregarItemACombo(procesador.buscarProducto(menuBase, partes[i]));
+                combo.agregarItemACombo(buscarProducto(menuBase, partes[i]));
             }
             combos.add(combo);
 
@@ -228,6 +227,16 @@ public class Restaurante {
         pedidoEnCurso = 0;
         id_actual++;
 
+    }
+
+
+    public ProductoMenu buscarProducto(ArrayList<ProductoMenu> menuBase,String nombre){
+        for(ProductoMenu producto : menuBase){
+            if (producto.getNombre().equals(nombre)){
+                return producto;
+            }
+        }
+        return null;
     }
 
     public String input(String mensaje) {
